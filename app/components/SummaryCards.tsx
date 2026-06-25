@@ -1,39 +1,68 @@
 'use client'
 
-import { Movie } from '../types'
+import { Film, Star, MessageSquare, Flame } from 'lucide-react'
 
 interface Props {
-  movies: Movie[]
+  totalCount: number
+  avgRating: number
+  avgSentiment: number
+  hitsCount: number
 }
 
-export default function SummaryCards({ movies }: Props) {
-  const totalMovies = movies.length
-  const avgRating = (movies.reduce((sum, m) => sum + m.avg_rating, 0) / totalMovies).toFixed(2)
-  const avgSentiment = (movies.reduce((sum, m) => sum + m.avg_sentiment, 0) / totalMovies).toFixed(2)
+const cards = [
+  {
+    label: 'Total Film',
+    icon: Film,
+    gradient: 'gradient-card-blue',
+    borderColor: 'border-blue-200',
+    getValue: (p: Props) => p.totalCount.toLocaleString(),
+    subtitle: 'film dianalisis',
+  },
+  {
+    label: 'Rata-rata Rating',
+    icon: Star,
+    gradient: 'gradient-card-green',
+    borderColor: 'border-green-200',
+    getValue: (p: Props) => p.avgRating.toFixed(2),
+    subtitle: 'dari skala 1-10',
+  },
+  {
+    label: 'Rata-rata Sentimen',
+    icon: MessageSquare,
+    gradient: 'gradient-card-purple',
+    borderColor: 'border-purple-200',
+    getValue: (p: Props) => p.avgSentiment.toFixed(2),
+    subtitle: 'dari skala 0-1',
+  },
+  {
+    label: 'Film Hits',
+    icon: Flame,
+    gradient: 'gradient-card-amber',
+    borderColor: 'border-amber-200',
+    getValue: (p: Props) => p.hitsCount.toLocaleString(),
+    subtitle: 'film terpopuler',
+  },
+]
 
-  const kategoriCount: Record<string, number> = {}
-  for (const m of movies) {
-    kategoriCount[m.klasifikasi] = (kategoriCount[m.klasifikasi] || 0) + 1
-  }
-
-  const cards = [
-    { label: 'Total Film', value: totalMovies, color: 'bg-blue-500' },
-    { label: 'Rata-rata Rating', value: avgRating, color: 'bg-green-500' },
-    { label: 'Rata-rata Sentiment', value: avgSentiment, color: 'bg-purple-500' },
-    { label: 'Jumlah Kategori', value: Object.keys(kategoriCount).length, color: 'bg-amber-500' },
-  ]
-
+export default function SummaryCards(props: Props) {
   return (
     <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-      {cards.map((card) => (
-        <div key={card.label} className="rounded-xl border bg-white p-4 shadow-sm">
-          <div className="flex items-center gap-3">
-            <div className={`w-3 h-3 rounded-full ${card.color}`} />
-            <p className="text-sm text-gray-500">{card.label}</p>
+      {cards.map((card) => {
+        const Icon = card.icon
+        return (
+          <div
+            key={card.label}
+            className={`rounded-2xl border ${card.borderColor} ${card.gradient} p-5 card-hover cursor-default`}
+          >
+            <div className="flex items-center justify-between mb-3">
+              <Icon className="w-6 h-6 text-gray-600" />
+              <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">{card.label}</span>
+            </div>
+            <p className="text-3xl font-bold text-gray-800">{card.getValue(props)}</p>
+            <p className="text-xs text-gray-500 mt-1">{card.subtitle}</p>
           </div>
-          <p className="text-2xl font-bold mt-2">{card.value}</p>
-        </div>
-      ))}
+        )
+      })}
     </div>
   )
 }

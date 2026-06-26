@@ -36,8 +36,8 @@ const CustomTooltip = ({ active, payload }: any) => {
     return (
       <div className="bg-white/90 backdrop-blur-sm rounded-xl border border-gray-100 shadow-lg p-3 text-sm">
         <p className="font-semibold text-gray-800 mb-1 max-w-[200px] truncate">{d.movie}</p>
-        <p className="text-gray-500">Rating: <span className="font-medium text-gray-700">{Number(d.avg_rating).toFixed(2)}</span></p>
-        <p className="text-gray-500">Sentimen: <span className="font-medium text-gray-700">{Number(d.avg_sentiment).toFixed(2)}</span></p>
+        <p className="text-gray-500">Rating: <span className="font-medium text-gray-700">{Number(d.x).toFixed(2)}</span></p>
+        <p className="text-gray-500">Sentimen: <span className="font-medium text-gray-700">{Number(d.y).toFixed(2)}</span></p>
       </div>
     )
   }
